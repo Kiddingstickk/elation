@@ -1,0 +1,108 @@
+import { useEffect, useRef, useState } from 'react';
+import workshopImage from '@/assets/workshop-interior.jpg';
+import featuredMod2 from '@/assets/featured-mod-2.jpg';
+
+const AboutShop = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section id="about" ref={sectionRef} className="py-24 bg-background relative overflow-hidden">
+      {/* Decorative Element */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent" />
+
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Content Side */}
+          <div className={`order-2 lg:order-1 ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-[2px] bg-primary" />
+              <span className="text-primary uppercase tracking-widest text-sm font-medium">
+                About Our Shop
+              </span>
+            </div>
+            <h2 className="font-display text-4xl md:text-5xl text-foreground mb-6">
+              Built on Passion.<br />
+              <span className="text-primary">Driven</span> by Excellence.
+            </h2>
+            <div className="space-y-4 text-muted-foreground text-lg mb-8">
+              <p>
+                Since 2017, <strong>Elation Auto Repair</strong> has been serving the Baltimore
+                community with trusted auto repair and maintenance services. What started as a
+                neighborhood shop has grown into a reliable destination for drivers who want
+                quality work and honest service.
+              </p>
+              <p>
+                Our team brings years of combined experience to every vehicle that enters our
+                shop. We blend hands-on craftsmanship with modern diagnostic technology to ensure
+                every repair is done right.
+              </p>
+              <p>
+                Whether you need routine maintenance or complex repairs, we treat every vehicle
+                with care and attention — just like it was our own.
+              </p>
+            </div>
+
+            {/* Certifications */}
+            <div className="flex flex-wrap gap-4">
+              {['ASE Certified', 'AAA Approved', 'BBB A+ Rated', 'EPA Certified'].map((cert) => (
+                <div
+                  key={cert}
+                  className="px-4 py-2 bg-secondary border border-border rounded text-sm font-medium text-foreground"
+                >
+                  {cert}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Image Side */}
+          <div className={`order-1 lg:order-2 ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
+            <div className="relative">
+              {/* Main Image */}
+              <img
+                src={workshopImage}
+                alt="Elation Auto Repair professional workshop with modern equipment and tools"
+                className="w-full h-[400px] object-cover rounded shadow-lg"
+              />
+
+              {/* Secondary Image - Overlapping */}
+              <div className="absolute -bottom-12 -left-8 w-2/3 hidden lg:block">
+                <img
+                  src={featuredMod2}
+                  alt="Classic car restoration project at Elation Auto Repair"
+                  className="w-full h-48 object-cover rounded border-4 border-background shadow-xl"
+                />
+              </div>
+
+              {/* Experience Badge */}
+              <div className="absolute top-6 right-6 bg-card/95 backdrop-blur-sm border border-primary p-4 rounded shadow-lg">
+                <div className="font-display text-3xl text-primary">2017</div>
+                <div className="text-xs uppercase tracking-wider text-muted-foreground">Est.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default AboutShop;
